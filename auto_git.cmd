@@ -33,4 +33,4 @@ git push
 :end
 net helpmsg %errorlevel%
 timeout 5 /nobreak > nul
-exit /b %errorlevel%githju
+exit /b %errorlevel%
