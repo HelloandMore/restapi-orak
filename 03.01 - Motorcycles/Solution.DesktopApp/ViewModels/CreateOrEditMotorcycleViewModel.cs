@@ -54,7 +54,7 @@ public partial class CreateOrEditMotorcycleViewModel(
         if(!hasValue)
         {
             asyncButtonAction = OnSaveAsync;
-            Title = "Add new  motorcycle";
+            Title = "Add new motorcycle";
             return;
         }
 
