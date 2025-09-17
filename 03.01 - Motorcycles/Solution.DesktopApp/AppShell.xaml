@@ -36,6 +36,19 @@
             </MenuFlyoutItem.IconImageSource>
           </MenuFlyoutItem>
         </MenuBarItem>
+
+        <MenuBarItem Text="Type">
+            <MenuFlyoutItem Text="Add New">
+                
+            </MenuFlyoutItem>
+        </MenuBarItem>
+
+        <MenuBarItem Text="Manufacturer">
+            <MenuFlyoutItem Text="Add New">
+
+            </MenuFlyoutItem>
+
+        </MenuBarItem>
       </Shell.MenuBarItems>
 
     <ShellContent ContentTemplate="{DataTemplate local:MainView}"

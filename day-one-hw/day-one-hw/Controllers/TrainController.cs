@@ -90,14 +90,6 @@ public class TrainController : ControllerBase
 	{
 		var existingTrain = Trains.FirstOrDefault(t => t.Id == id);
 		if (existingTrain == null) return NotFound($"Train with ID {id} not found.");
-		if (!string.IsNullOrEmpty(updatedTrain.Name)) existingTrain.Name = updatedTrain.Name;
-		if (!string.IsNullOrEmpty(updatedTrain.Type)) existingTrain.Type = updatedTrain.Type;
-		if (updatedTrain.BuildDate != null) existingTrain.BuildDate = updatedTrain.BuildDate;
-		if (updatedTrain.MaxSpeed != null) existingTrain.MaxSpeed = updatedTrain.MaxSpeed;
-		if (updatedTrain.Weight != null) existingTrain.Weight = updatedTrain.Weight;
-		if (updatedTrain.Length != null) existingTrain.Length = updatedTrain.Length;
-		if (updatedTrain.Gauge != null) existingTrain.Gauge = updatedTrain.Gauge;
-		if (updatedTrain.Power != null) existingTrain.Power = updatedTrain.Power;
 		return Ok();
 	}
 
