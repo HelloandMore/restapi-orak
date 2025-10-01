@@ -9,6 +9,8 @@ public static class ConfigureDI
         builder.Services.AddTransient<CreateOrEditMotorcycleViewModel>();
         builder.Services.AddTransient<CreateOrEditTypeViewModel>();
         builder.Services.AddTransient<CreateOrEditManufacturerViewModel>();
+        builder.Services.AddTransient<TypeListViewModel>();
+        builder.Services.AddTransient<ManufacturerListViewModel>();
 
 
         builder.Services.AddTransient<MainView>();
@@ -16,6 +18,8 @@ public static class ConfigureDI
         builder.Services.AddTransient<CreateOrEditMotorcycleView>();
         builder.Services.AddTransient<CreateOrEditTypeView>();
         builder.Services.AddTransient<CreateOrEditManufacturerView>();
+        builder.Services.AddTransient<TypeListView>();
+        builder.Services.AddTransient<ManufacturerListView>();
 
         builder.Services.AddScoped<IGoogleDriveService, GoogleDriveService> ();
         builder.Services.AddTransient<IMotorcycleService, MotorcycleService>();

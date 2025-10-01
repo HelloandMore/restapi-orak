@@ -38,11 +38,13 @@
         </MenuBarItem>
         
         <MenuBarItem Text="Type">
-        <MenuFlyoutItem Text="Add Type" Command="{Binding AddNewTypeCommand}" />
+            <MenuFlyoutItem Text="Add Type" Command="{Binding AddNewTypeCommand}" />
+            <MenuFlyoutItem Text="List All Types" Command="{Binding ListAllTypesCommand}" />
         </MenuBarItem>
 
         <MenuBarItem Text="Manufacturer">
             <MenuFlyoutItem Text="Add Manufacturer" Command="{Binding AddNewManufacturerCommand}" />
+            <MenuFlyoutItem Text="List All Manufacturers" Command="{Binding ListAllManufacturersCommand}" />
         </MenuBarItem>
     </Shell.MenuBarItems>
     

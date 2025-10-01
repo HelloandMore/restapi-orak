@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Solution.DataBase;
-
-namespace Solution.Api.Configurations;
+﻿namespace Solution.Api.Configurations;
 
 public static class DatabaseConfiguration
 {

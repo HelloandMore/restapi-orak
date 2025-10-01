@@ -20,5 +20,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(CreateOrEditMotorcycleView.Name, typeof(CreateOrEditMotorcycleView));
         Routing.RegisterRoute(CreateOrEditTypeView.Name, typeof(CreateOrEditTypeView));
         Routing.RegisterRoute(CreateOrEditManufacturerView.Name, typeof(CreateOrEditManufacturerView));
+        Routing.RegisterRoute(TypeListView.Name, typeof(TypeListView));
+        Routing.RegisterRoute(ManufacturerListView.Name, typeof(ManufacturerListView));
     }
 }

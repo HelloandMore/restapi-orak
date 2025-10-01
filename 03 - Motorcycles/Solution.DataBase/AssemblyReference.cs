@@ -1,12 +1,4 @@
-﻿using Solution.Database.Migrations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Solution.Database
+﻿namespace Solution.Database
 {
     public static class AssemblyReference
     {

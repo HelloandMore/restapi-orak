@@ -13,8 +13,6 @@ public partial class CreateOrEditMotorcycleViewModel(
 
     public IRelayCommand ValidateCommand => new AsyncRelayCommand<string>(OnValidateAsync);
 
-    
-
     #region event commands
     public IAsyncRelayCommand SubmitCommand => new AsyncRelayCommand(OnSubmitAsync);
     public IAsyncRelayCommand ImageSelectCommand => new AsyncRelayCommand(OnImageSelectAsync);

@@ -117,6 +117,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Components\TypeListComponent.xaml.cs">
+	    <DependentUpon>TypeListComponent.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\CreateOrEditTypeView.xaml.cs">
 	    <DependentUpon>CreateOrEditTypeView.xaml</DependentUpon>
 	  </Compile>
@@ -126,6 +129,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Components\TypeListComponent.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\ManufacturerListComponent.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\MotorcycleListComponent.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -138,7 +147,13 @@
 	  <MauiXaml Update="Views\CreateOrEditMotorcycleView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\ManufacturerListView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\MotorcycleListView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TypeListView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
