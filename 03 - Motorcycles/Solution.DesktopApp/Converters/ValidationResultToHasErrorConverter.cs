@@ -6,7 +6,7 @@ public class ValidationResultToHasErrorConverter : IValueConverter
     {
         if (value is not ValidationResult validationResult || parameter == null)
         {
-        return null;
+            return null;
         }
 
         if(validationResult.IsValid)
@@ -16,11 +16,12 @@ public class ValidationResultToHasErrorConverter : IValueConverter
 
         var property = parameter as string;
 
-        return validationResult.Errors.Any(x => x .PropertyName == property);
+        return validationResult.Errors.Any(x => x.PropertyName == property);
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        throw new NotImplementedException("ConvertBack not implemented for the converter.");
+        // This converter is intended for one-way binding only
+        return null;
     }
 }

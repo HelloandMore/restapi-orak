@@ -2,7 +2,6 @@
 
 public class MotorcycleModelValidator: BaseValidator<MotorcycleModel>
 {
-
     public static string ModelProperty => nameof(MotorcycleModel.Model);
     public static string CubicProperty => nameof(MotorcycleModel.Cubic);
     public static string ManufacturerProperty => nameof(MotorcycleModel.Manufacturer);
@@ -11,15 +10,24 @@ public class MotorcycleModelValidator: BaseValidator<MotorcycleModel>
     public static string ReleaseYearProperty => nameof(MotorcycleModel.ReleaseYear);
     public static string GlobalProperty => "Global";
 
+    // Constructor for desktop app usage (no HTTP context needed)
+    public MotorcycleModelValidator() : base(null)
+    {
+        ConfigureRules();
+    }
 
-
+    // Constructor for API usage (with HTTP context)
     public MotorcycleModelValidator(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
     {
-        var requestedMethod = httpContextAccessor?.HttpContext?.Request.Method;
-        if (requestedMethod is not null && HttpMethods.IsPost(requestedMethod))
+        ConfigureRules();
+    }
+
+    private void ConfigureRules()
+    {
+        if (IsPutMethod)
         {
-            RuleFor(x => x.Id).NotEmpty().WithMessage("Id is required");
-            // hw. does ID exist in the DB already?
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Id is required for update");
+            // TODO: validate that ID exists in the DB
         }
 
         RuleFor(x => x.Model).NotEmpty().WithMessage("Model is required");
@@ -28,12 +36,11 @@ public class MotorcycleModelValidator: BaseValidator<MotorcycleModel>
         RuleFor(x => x.Manufacturer).NotNull().WithMessage("Manufacturer is required");
         //RuleFor(x => x.Manufacturer.Id).GreaterThan(0).WithMessage("Manufacturer ID has to be greater than 0");
         RuleFor(x => x.NumberOfCylinders).NotNull().WithMessage("Cylinders are required")
-                                         .GreaterThan(0).WithMessage("Number of cylynders has to be greter than 0");
+                                         .GreaterThan(0).WithMessage("Number of cylinders has to be greater than 0");
         RuleFor(x => x.ReleaseYear).NotNull().WithMessage("Release year is required")
                                    .InclusiveBetween(1900, DateTime.Now.Year).WithMessage("Invalid release year");
         RuleFor(x => x.Type).NotEmpty().WithMessage("Type is required");
         //RuleFor(x => x.Type.Id).GreaterThan(0).WithMessage("Type ID has to be greater than 0");
-        // hw. does Type ID exist in the DB?
+        // TODO: validate that Type ID exists in the DB
     }
-
 }

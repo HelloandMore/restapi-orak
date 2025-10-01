@@ -1,5 +1,4 @@
-﻿
-namespace Solution.DesktopApp.ViewModels;
+﻿namespace Solution.DesktopApp.ViewModels;
 
 public partial class CreateOrEditMotorcycleViewModel(
     AppDbContext dbContext,
@@ -7,7 +6,7 @@ public partial class CreateOrEditMotorcycleViewModel(
     IGoogleDriveService googleDriveService) : MotorcycleModel, IQueryAttributable
 {
     #region life cycle commands
-    public IAsyncRelayCommand AppearingCommand => new AsyncRelayCommand(OnAppearingkAsync);
+    public IAsyncRelayCommand AppearingCommand => new AsyncRelayCommand(OnAppearingAsync);
     public IAsyncRelayCommand DisappearingCommand => new AsyncRelayCommand(OnDisappearingAsync);
     #endregion
 
@@ -18,13 +17,13 @@ public partial class CreateOrEditMotorcycleViewModel(
     public IAsyncRelayCommand ImageSelectCommand => new AsyncRelayCommand(OnImageSelectAsync);
     #endregion
 
-    private MotorcycleModelValidator validator => new MotorcycleModelValidator(null);
+    private MotorcycleModelValidator validator => new MotorcycleModelValidator();
 
     [ObservableProperty]
     private ValidationResult validationResult = new ValidationResult();
 
-    private delegate Task ButtonActionDelagate();
-    private ButtonActionDelagate asyncButtonAction;
+    private delegate Task ButtonActionDelegate();
+    private ButtonActionDelegate asyncButtonAction;
 
     [ObservableProperty]
     private string title;
@@ -53,7 +52,7 @@ public partial class CreateOrEditMotorcycleViewModel(
         if(!hasValue)
         {
             asyncButtonAction = OnSaveAsync;
-            Title = "Add new  motorcycle";
+            Title = "Add new motorcycle";
             return;
         }
 
@@ -82,7 +81,7 @@ public partial class CreateOrEditMotorcycleViewModel(
         Title = "Update motorcycle";
     }
 
-    private async Task OnAppearingkAsync()
+    private async Task OnAppearingAsync()
     {
     }
 
@@ -100,7 +99,7 @@ public partial class CreateOrEditMotorcycleViewModel(
             return;
         }
 
-        await UploaImageAsync();
+        await UploadImageAsync();
 
         var result = await motorcycleService.CreateAsync(this);
         var message = result.IsError ? result.FirstError.Description : "Motorcycle saved.";
@@ -123,7 +122,7 @@ public partial class CreateOrEditMotorcycleViewModel(
             return;
         }
 
-        await UploaImageAsync();
+        await UploadImageAsync();
 
         var result = await motorcycleService.UpdateAsync(this);
 
@@ -150,7 +149,7 @@ public partial class CreateOrEditMotorcycleViewModel(
         Image = ImageSource.FromStream(() => stream);
     }
 
-    private async Task UploaImageAsync()
+    private async Task UploadImageAsync()
     {
         if (selectedFile is null)
         {

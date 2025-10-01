@@ -1,6 +1,4 @@
-﻿using System.Security;
-
-namespace Solution.DesktopApp.Converters;
+﻿namespace Solution.DesktopApp.Converters;
 
 public class ValidationResultToErrorMessagesConverter : IValueConverter
 {
@@ -24,6 +22,7 @@ public class ValidationResultToErrorMessagesConverter : IValueConverter
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        throw new NotImplementedException("ConvertBack not implemented for the converter.");
+        // This converter is intended for one-way binding only
+        return null;
     }
 }

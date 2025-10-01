@@ -9,6 +9,7 @@
             <ColumnDefinition Width="80" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="80" />
         </Grid.ColumnDefinitions>
 
 
@@ -26,8 +27,17 @@
                 VerticalTextAlignment="Center" />
 
 
-        <!-- Delete button -->
+        <!-- Edit button -->
         <ImageButton Grid.Column="2"
+                    Source="{AppThemeBinding Light=edit_dark.png, Dark=edit_light.png}"
+                    Command="{Binding EditCommand, Source={x:Reference this}}"
+                    HorizontalOptions="End" VerticalOptions="Center"
+                    BackgroundColor="Transparent"
+                    WidthRequest="25" HeightRequest="25" />
+
+
+        <!-- Delete button -->
+        <ImageButton Grid.Column="3"
                     Source="{AppThemeBinding Light=delete_dark.png, Dark=delete_light.png}"
                     Command="{Binding DeleteCommand, Source={x:Reference this}}"
                     CommandParameter="{Binding Manufacturer.Id, Source={x:Reference this}}"

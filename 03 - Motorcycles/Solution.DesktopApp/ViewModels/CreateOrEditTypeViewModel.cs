@@ -7,7 +7,7 @@ public partial class CreateOrEditTypeViewModel(
     ITypeService typeService) : TypeModel, IQueryAttributable
 {
     #region life cycle commands
-    public IAsyncRelayCommand AppearingCommand => new AsyncRelayCommand(OnAppearingkAsync);
+    public IAsyncRelayCommand AppearingCommand => new AsyncRelayCommand(OnAppearingAsync);
     public IAsyncRelayCommand DisappearingCommand => new AsyncRelayCommand(OnDisappearingAsync);
     #endregion
 
@@ -22,8 +22,8 @@ public partial class CreateOrEditTypeViewModel(
     [ObservableProperty]
     private ValidationResult validationResult = new ValidationResult();
 
-    private delegate Task ButtonActionDelagate();
-    private ButtonActionDelagate asyncButtonAction;
+    private delegate Task ButtonActionDelegate();
+    private ButtonActionDelegate asyncButtonAction;
 
     [ObservableProperty]
     private string title;
@@ -35,7 +35,7 @@ public partial class CreateOrEditTypeViewModel(
         if (!hasValue)
         {
             asyncButtonAction = OnSaveAsync;
-            Title = "Add new type";
+            this.title = "Add new type";
             return;
         }
 
@@ -45,10 +45,10 @@ public partial class CreateOrEditTypeViewModel(
         this.Name = type.Name;
 
         asyncButtonAction = OnUpdateAsync;
-        Title = "Update type";
+        this.title = "Update type";
     }
 
-    private async Task OnAppearingkAsync()
+    private async Task OnAppearingAsync()
     {
     }
 
@@ -59,9 +59,9 @@ public partial class CreateOrEditTypeViewModel(
 
     private async Task OnSaveAsync()
     {
-        this.ValidationResult = await validator.ValidateAsync(this);
+        this.validationResult = await validator.ValidateAsync(this);
 
-        if (!ValidationResult.IsValid)
+        if (!this.validationResult.IsValid)
         {
             return;
         }
@@ -80,9 +80,9 @@ public partial class CreateOrEditTypeViewModel(
 
     private async Task OnUpdateAsync()
     {
-        this.ValidationResult = await validator.ValidateAsync(this);
+        this.validationResult = await validator.ValidateAsync(this);
 
-        if (!ValidationResult.IsValid)
+        if (!this.validationResult.IsValid)
         {
             return;
         }
@@ -103,9 +103,9 @@ public partial class CreateOrEditTypeViewModel(
     {
         var result = await validator.ValidateAsync(this, options => options.IncludeProperties(propertyName));
 
-        ValidationResult.Errors.Remove(ValidationResult.Errors.FirstOrDefault(x => x.PropertyName == propertyName));
-        ValidationResult.Errors.Remove(ValidationResult.Errors.FirstOrDefault(x => x.PropertyName == TypeModelValidator.GlobalProperty));
-        ValidationResult.Errors.AddRange(result.Errors);
+        this.validationResult.Errors.Remove(this.validationResult.Errors.FirstOrDefault(x => x.PropertyName == propertyName));
+        this.validationResult.Errors.Remove(this.validationResult.Errors.FirstOrDefault(x => x.PropertyName == TypeModelValidator.GlobalProperty));
+        this.validationResult.Errors.AddRange(result.Errors);
 
         OnPropertyChanged(nameof(ValidationResult));
     }
