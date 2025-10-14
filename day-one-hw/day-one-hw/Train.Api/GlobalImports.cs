@@ -1,0 +1,13 @@
+global using Train.Api.Configurations;
+global using Microsoft.EntityFrameworkCore;
+global using Train.Database;
+global using Microsoft.AspNetCore.Mvc;
+global using Train.Core.Interfaces;
+global using Train.Services;
+global using ErrorOr;
+global using Microsoft.AspNetCore.Mvc.ModelBinding;
+global using Train.Core.Models;
+global using FluentValidation;
+global using FluentValidation.AspNetCore;
+global using Microsoft.AspNetCore.Http;
+global using System.ComponentModel.DataAnnotations;

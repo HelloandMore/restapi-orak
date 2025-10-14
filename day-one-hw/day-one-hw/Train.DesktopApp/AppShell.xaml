@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Train.DesktopApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Train.DesktopApp"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Train Management">
+
+    <Shell.Resources>
+        <Style x:Key="ShellContentStyle" TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="#090909" />
+            <Setter Property="Shell.TitleColor" Value="WhiteSmoke" />
+            <Setter Property="Shell.Background" Value="Gray" />
+        </Style>
+    </Shell.Resources>
+
+    <Shell.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Text="Exit" />
+        </MenuBarItem>
+
+        <MenuBarItem Text="Train">
+            <MenuFlyoutItem Text="Add New Train" />
+            <MenuFlyoutItem Text="List All Trains" />
+        </MenuBarItem>
+    </Shell.MenuBarItems>
+    
+    <ShellContent ContentTemplate="{DataTemplate local:MainView}"
+                  Route="MainView" />
+
+</Shell>

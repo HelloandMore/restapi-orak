@@ -1,0 +1,16 @@
+global using CommunityToolkit.Maui;
+global using CommunityToolkit.Maui.Alerts;
+global using CommunityToolkit.Maui.Core;
+global using CommunityToolkit.Mvvm.ComponentModel;
+global using CommunityToolkit.Mvvm.Input;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Logging;
+global using Train.Core.Interfaces;
+global using Train.Core.Models;
+global using Train.Database;
+global using Train.DesktopApp.Configurations;
+global using Train.Services;
+global using System.Runtime.InteropServices;
+global using System.Collections.ObjectModel;
+global using System.Windows.Input;
+global using ErrorOr;
