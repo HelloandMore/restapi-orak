@@ -15,7 +15,7 @@ public partial class AppShell : Shell
 
     private static void ConfigureShellNavigation()
     {
-        Routing.RegisterRoute(MainView.Name, typeof(MainView));
+        // MainView route is already defined in AppShell.xaml as ShellContent, no need to register here
         Routing.RegisterRoute(TrainListView.Name, typeof(TrainListView));
         Routing.RegisterRoute(CreateOrEditTrainView.Name, typeof(CreateOrEditTrainView));
     }

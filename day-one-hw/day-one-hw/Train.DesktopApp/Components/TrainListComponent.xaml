@@ -52,13 +52,14 @@
                          Command="{Binding EditCommand, Source={x:Reference this}}"
                          HorizontalOptions="End" VerticalOptions="Center" 
                          BackgroundColor="Transparent"
-                         WidthRequest="35" HeightRequest="35" />
+                         WidthRequest="25" HeightRequest="25" />
             <ImageButton Grid.Column="9"
                          Source="{AppThemeBinding Light=delete_dark.png, Dark=delete_light.png}"
                          Command="{Binding DeleteCommand, Source={x:Reference this}}"
+                         CommandParameter="{Binding Train.Id, Source={x:Reference this}}"
                          HorizontalOptions="End" VerticalOptions="Center" 
                          BackgroundColor="Transparent"
-                         WidthRequest="35" HeightRequest="35" />
+                         WidthRequest="25" HeightRequest="25" />
         </Grid>
     </Border>
 </ContentView>

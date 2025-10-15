@@ -87,8 +87,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:TrainModel">
                         <components:TrainListComponent Train="{Binding .}"
-                                                       DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type viewModels:TrainListViewModel}}, Path=DeleteCommand}"
-                                                       CommandParameter="{Binding Id}"/>
+                                                       DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type viewModels:TrainListViewModel}}, Path=DeleteCommand}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.Footer>

@@ -75,7 +75,19 @@ public partial class TrainListViewModel(ITrainService trainService)
     }
 
     private async Task OnDeleteAsync(string? id)
-    { 
+    {
+        var train = Trains.SingleOrDefault(x => x.Id == id);
+        if (train == null) return;
+
+        bool confirmed = await Application.Current.MainPage.DisplayAlert(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{train.Name}'?",
+            "Yes",
+            "No");
+
+        if (!confirmed)
+            return;
+
         var result = await trainService.DeleteAsync(id);
 
         var message = result.IsError ? result.FirstError.Description : "Train deleted.";
@@ -83,10 +95,9 @@ public partial class TrainListViewModel(ITrainService trainService)
 
         if (!result.IsError)
         {
-            var train = trains.SingleOrDefault(x => x.Id == id);
-            trains.Remove(train);
+            Trains.Remove(train);
 
-            if(trains.Count == 0)
+            if (Trains.Count == 0)
             {
                 await LoadTrainsAsync();
             }

@@ -30,44 +30,25 @@ public partial class TrainListComponent : ContentView
         set => SetValue(DeleteCommandProperty, value);
     }
 
-    public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(
-         propertyName: nameof(CommandParameter),
-         returnType: typeof(string),
-         declaringType: typeof(TrainListComponent),
-         defaultValue: null,
-         defaultBindingMode: BindingMode.TwoWay
-        );
 
-    public string CommandParameter
-    {
-        get => (string)GetValue(CommandParameterProperty);
-        set => SetValue(CommandParameterProperty, value);
-    }
 
     public IAsyncRelayCommand EditCommand => new AsyncRelayCommand(OnEditAsync);
 
     public TrainListComponent()
-	{
-		InitializeComponent();
-	}
-
-    protected override void OnBindingContextChanged()
     {
-        base.OnBindingContextChanged();
-
-        if (Train is not null)
-        {
-            CommandParameter = Train.Id;
-        }
+        InitializeComponent();
     }
+
+
 
     private async Task OnEditAsync()
     {
-        var parameters = new Dictionary<string, object>
+        ShellNavigationQueryParameters navigationQueryParameter = new ShellNavigationQueryParameters
         {
-            { "Train", Train }
+            { "Train", this.Train}
         };
 
-        await Shell.Current.GoToAsync(CreateOrEditTrainView.Name, parameters);
+        Shell.Current.ClearNavigationStack();
+        await Shell.Current.GoToAsync(CreateOrEditTrainView.Name, navigationQueryParameter);
     }
 }
