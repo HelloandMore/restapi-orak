@@ -103,6 +103,30 @@
 
 
 	<ItemGroup>
+	  <Compile Update="Components\TrainListComponent.xaml.cs">
+	    <DependentUpon>TrainListComponent.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\CreateOrEditTrainView.xaml.cs">
+	    <DependentUpon>CreateOrEditTrainView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\MainView.xaml.cs">
+	    <DependentUpon>MainView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Components\TrainListComponent.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CreateOrEditTrainView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TrainListView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Update="appSettings.Development.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>

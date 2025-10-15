@@ -1,14 +1,21 @@
+using Microsoft.Extensions.Configuration;
+
 namespace Train.DesktopApp.Configurations;
 
-public static class SqlServerConfiguration
+public static class ConfigureSQLServer
 {
     public static MauiAppBuilder UseMsSqlServer(this MauiAppBuilder builder)
     {
-        var connectionString = "Data Source=localhost;Database=TrainDB;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;";
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
         builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(connectionString));
-
+            options.UseLazyLoadingProxies()
+                   .UseSqlServer(connectionString, options =>
+                   {
+                       options.MigrationsAssembly(Train.Database.AssemblyReference.Assembly);
+                       options.EnableRetryOnFailure();
+                       options.CommandTimeout(300);
+                   }));
         return builder;
     }
 }

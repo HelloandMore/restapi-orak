@@ -1,22 +1,89 @@
-namespace Train.DesktopApp;
+﻿namespace Train.DesktopApp;
 
 public static class ExceptionHandler
 {
-    public static void HandleException(Exception exception)
-    {
-        // Log the exception
-        System.Diagnostics.Debug.WriteLine($"Exception occurred: {exception.Message}");
-        System.Diagnostics.Debug.WriteLine($"Stack trace: {exception.StackTrace}");
+#if WINDOWS
+    private static Exception _lastFirstChanceException;
+#endif
 
-        // In a production app, you might want to log to a file or send to a logging service
-        // For now, we'll just write to debug output
-    }
+	// We'll route all unhandled exceptions through this one event.
+	public static event UnhandledExceptionEventHandler UnhandledException;
 
-    public static async Task HandleExceptionAsync(Exception exception)
-    {
-        HandleException(exception);
+	static ExceptionHandler()
+	{
+		// This is the normal event expected, and should still be used.
+		// It will fire for exceptions from iOS and Mac Catalyst,
+		// and for exceptions on background threads from WinUI 3.
 
-        // You could also show a user-friendly dialog here
-        await Task.CompletedTask;
-    }
+		AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+		{
+			UnhandledException?.Invoke(sender, args);
+		};
+
+#if IOS || MACCATALYST
+
+		// For iOS and Mac Catalyst
+		// Exceptions will flow through AppDomain.CurrentDomain.UnhandledException,
+		// but we need to set UnwindNativeCode to get it to work correctly. 
+		// 
+		// See: https://github.com/xamarin/xamarin-macios/issues/15252
+
+		ObjCRuntime.Runtime.MarshalManagedException += (_, args) =>
+		{
+			args.ExceptionMode = ObjCRuntime.MarshalManagedExceptionMode.UnwindNativeCode;
+		};
+
+#elif ANDROID
+
+        // For Android:
+        // All exceptions will flow through Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser,
+        // and NOT through AppDomain.CurrentDomain.UnhandledException
+
+        Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
+        {
+            UnhandledException?.Invoke(sender, new UnhandledExceptionEventArgs(args.Exception, true));
+        };
+
+        Java.Lang.Thread.DefaultUncaughtExceptionHandler = new CustomUncaughtExceptionHandler(e =>
+            UnhandledException?.Invoke(null, new UnhandledExceptionEventArgs(e, true)));
+
+#elif WINDOWS
+
+        // For WinUI 3:
+        //
+        // * Exceptions on background threads are caught by AppDomain.CurrentDomain.UnhandledException,
+        //   not by Microsoft.UI.Xaml.Application.Current.UnhandledException
+        //   See: https://github.com/microsoft/microsoft-ui-xaml/issues/5221
+        //
+        // * Exceptions caught by Microsoft.UI.Xaml.Application.Current.UnhandledException have details removed,
+        //   but that can be worked around by saved by trapping first chance exceptions
+        //   See: https://github.com/microsoft/microsoft-ui-xaml/issues/7160
+        //
+
+        AppDomain.CurrentDomain.FirstChanceException += (_, args) =>
+        {
+            _lastFirstChanceException = args.Exception;
+        };
+
+        Microsoft.UI.Xaml.Application.Current.UnhandledException += (sender, args) =>
+        {
+            var exception = args.Exception;
+            if (exception.StackTrace is null)
+            {
+                exception = _lastFirstChanceException;
+            }
+            UnhandledException?.Invoke(sender, new UnhandledExceptionEventArgs(exception, true));
+        };
+#endif
+	}
 }
+
+#if ANDROID
+	public class CustomUncaughtExceptionHandler(Action<Java.Lang.Throwable> callback): Java.Lang.Object, Java.Lang.Thread.IUncaughtExceptionHandler
+	{
+		public void UncaughtException(Java.Lang.Thread t, Java.Lang.Throwable e)
+		{
+			callback(e);
+		}
+	}
+#endif

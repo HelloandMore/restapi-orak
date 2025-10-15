@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace Solution.DesktopApp
+namespace Train.DesktopApp
 {
     [Application]
     public class MainApplication : MauiApplication

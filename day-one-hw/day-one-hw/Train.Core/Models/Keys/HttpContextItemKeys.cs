@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Solution.Core.Models.Keys;
+namespace Train.Core.Models.Keys;
 
 public static class HttpContextItemKeys
 {

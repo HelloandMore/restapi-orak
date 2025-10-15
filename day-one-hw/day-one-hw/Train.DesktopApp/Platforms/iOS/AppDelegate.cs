@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Solution.DesktopApp
+namespace Train.DesktopApp
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

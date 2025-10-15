@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
+             xmlns:validator="clr-namespace:Train.Validators;assembly=Train.Validators"
+             xmlns:converters="clr-namespace:Train.DesktopApp.Converters"
+             xmlns:editors="clr-namespace:Syncfusion.Maui.Toolkit.NumericEntry;assembly=Syncfusion.Maui.Toolkit"
+             xmlns:viewModels="clr-namespace:Train.DesktopApp.ViewModels"
+             xmlns:models="clr-namespace:Train.Core.Models;assembly=Train.Core"
+             xmlns:behaviors="clr-namespace:Train.DesktopApp.Behaviors"
+             x:Class="Train.DesktopApp.Views.CreateOrEditTrainView"
+             x:DataType="viewModels:CreateOrEditTrainViewModel"
+             x:Name="this">
+  
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior Command="{Binding AppearingCommand}" EventName="Appearing"/>
+        <toolkit:EventToCommandBehavior Command="{Binding DisappearingCommand}" EventName="Disappearing" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ValidationResultToErrorMessagesConverter x:Key="ValidationResultToErrorMessagesConverter" />
+            <converters:ValidationResultToHasErrorConverter x:Key="ValidationResultToHasErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <StackLayout Orientation="Vertical"
+                     Grid.Column="0"
+                     Style="{StaticResource FormLineContainer}"
+                     Margin="40">
+            <Border Stroke="{AppThemeBinding Light=Black, Dark=White}"
+                    StrokeThickness="2"
+                    Background="Transparent"
+                    Padding="0"
+                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Image Source="{Binding Image}" />
+            </Border>
+            <Button Text="Please select an image"
+                    Margin="0,5"
+                    Command="{Binding ImageSelectCommand}" />
+        </StackLayout>
+
+        <ScrollView Grid.Column="1">
+            <StackLayout Orientation="Vertical" Padding="20">
+                <Label Text="{Binding Title}" Style="{StaticResource PageTitle}" />
+
+                <sf:SfTextInputLayout
+                    Hint="Name"
+                    ContainerType="Outlined"
+                    OutlineCornerRadius="8"
+                    ErrorText="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.NameProperty}
+                    }"
+                    HasError="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.NameProperty}
+                    }">
+
+                    <Entry Text="{Binding Name}">
+                        <Entry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                            BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
+                                                            Command="{Binding ValidateCommand}" 
+                                                            CommandParameter="{x:Static validator:TrainModelValidator.NameProperty}" />
+                        </Entry.Behaviors>
+                    </Entry>
+                </sf:SfTextInputLayout>
+
+                <sf:SfTextInputLayout
+                    Hint="Type"
+                    ContainerType="Outlined"
+                    OutlineCornerRadius="8"
+                    ErrorText="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.TypeProperty}
+                    }"
+                    HasError="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.TypeProperty}
+                    }">
+
+                    <Picker ItemsSource="{Binding TrainTypes}"
+                            SelectedItem="{Binding Type}">
+                        <Picker.Behaviors>
+                            <toolkit:EventToCommandBehavior
+                                EventName="SelectedIndexChanged"
+                                BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
+                                Command="{Binding ValidateCommand}" 
+                                CommandParameter="{x:Static validator:TrainModelValidator.TypeProperty}" />
+                        </Picker.Behaviors>
+                    </Picker>
+                </sf:SfTextInputLayout>
+
+                <sf:SfTextInputLayout
+                    Hint="Build Date"
+                    ContainerType="Outlined"
+                    OutlineCornerRadius="8"
+                    ErrorText="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.BuildDateProperty}
+                    }"
+                    HasError="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.BuildDateProperty}
+                    }">
+
+                    <Entry Text="{Binding BuildDate}">
+                        <Entry.Behaviors>
+                            <behaviors:EntryIntegerBehavior />
+                            <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                            BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
+                                                            Command="{Binding ValidateCommand}" 
+                                                            CommandParameter="{x:Static validator:TrainModelValidator.BuildDateProperty}" />
+                        </Entry.Behaviors>
+                    </Entry>
+                </sf:SfTextInputLayout>
+
+                <sf:SfTextInputLayout
+                    Hint="Max Speed (km/h)"
+                    ContainerType="Outlined"
+                    OutlineCornerRadius="8"
+                    ErrorText="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.MaxSpeedProperty}
+                    }"
+                    HasError="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.MaxSpeedProperty}
+                    }">
+
+                    <Entry Text="{Binding MaxSpeed}">
+                        <Entry.Behaviors>
+                            <behaviors:EntryIntegerBehavior />
+                            <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                            BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
+                                                            Command="{Binding ValidateCommand}" 
+                                                            CommandParameter="{x:Static validator:TrainModelValidator.MaxSpeedProperty}" />
+                        </Entry.Behaviors>
+                    </Entry>
+                </sf:SfTextInputLayout>
+
+                <sf:SfTextInputLayout
+                    Hint="Weight (tons)"
+                    ContainerType="Outlined"
+                    OutlineCornerRadius="8"
+                    ErrorText="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.WeightProperty}
+                    }"
+                    HasError="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.WeightProperty}
+                    }">
+
+                    <editors:SfNumericEntry Value="{Binding Weight}" AllowNull="True" />
+                </sf:SfTextInputLayout>
+
+                <sf:SfTextInputLayout
+                    Hint="Length (m)"
+                    ContainerType="Outlined"
+                    OutlineCornerRadius="8"
+                    ErrorText="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.LengthProperty}
+                    }"
+                    HasError="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.LengthProperty}
+                    }">
+
+                    <editors:SfNumericEntry Value="{Binding Length}" AllowNull="True" />
+                </sf:SfTextInputLayout>
+
+                <sf:SfTextInputLayout
+                    Hint="Gauge (mm)"
+                    ContainerType="Outlined"
+                    OutlineCornerRadius="8"
+                    ErrorText="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.GaugeProperty}
+                    }"
+                    HasError="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.GaugeProperty}
+                    }">
+
+                    <editors:SfNumericEntry Value="{Binding Gauge}" AllowNull="True" />
+                </sf:SfTextInputLayout>
+
+                <sf:SfTextInputLayout
+                    Hint="Power (kW)"
+                    ContainerType="Outlined"
+                    OutlineCornerRadius="8"
+                    ErrorText="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.PowerProperty}
+                    }"
+                    HasError="{
+                        Binding ValidationResult, 
+                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                        ConverterParameter={x:Static validator:TrainModelValidator.PowerProperty}
+                    }">
+
+                    <editors:SfNumericEntry Value="{Binding Power}" AllowNull="True" />
+                </sf:SfTextInputLayout>
+
+                <Button Text="Submit"
+                        Margin="0,20,0,0"
+                        Command="{Binding SubmitCommand}" />
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

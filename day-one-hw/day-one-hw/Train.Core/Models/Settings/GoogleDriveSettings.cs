@@ -1,4 +1,4 @@
-﻿namespace Solution.Core.Models.Settings;
+﻿namespace Train.Core.Models.Settings;
 
 public class GoogleDriveSettings: JsonCredentialParameters
 {

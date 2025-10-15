@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui.Markup;
+using Train.DesktopApp.Configurations;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 
@@ -10,10 +11,7 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder.UseMauiApp<App>()
-               .UseMauiCommunityToolkit(options =>
-               {
-                   options.SetShouldEnableSnackbarOnWindows(true);
-               })
+               .UseMauiCommunityToolkit()
                .ConfigureSyncfusionCore()
                .ConfigureSyncfusionToolkit()
                .UseMauiCommunityToolkitMarkup()

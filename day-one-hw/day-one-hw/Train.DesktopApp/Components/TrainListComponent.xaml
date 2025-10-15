@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Train.DesktopApp.Components.TrainListComponent"
+             x:Name="this">
+    <Border Padding="0,10,0,10">
+        <Grid Padding="10,0,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0"
+                   HorizontalOptions="Center"
+                   WidthRequest="100">
+                <Image.Source>
+                    <UriImageSource Uri="{Binding Train.WebContentLink, Source={x:Reference this}}"
+                                    CacheValidity="10:00:00:00" />
+                </Image.Source>
+            </Image>
+            <Label Grid.Column="1"
+                   Text="{Binding Train.Name, Source={x:Reference this}}" 
+                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+            <Label Grid.Column="2"
+                   Text="{Binding Train.Type, Source={x:Reference this}}" 
+                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+            <Label Grid.Column="3"
+                   Text="{Binding Train.BuildDate, Source={x:Reference this}}" 
+                   HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+            <Label Grid.Column="4"
+                   Text="{Binding Train.MaxSpeed, Source={x:Reference this}}" 
+                   HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+            <Label Grid.Column="5"
+                   Text="{Binding Train.Weight, Source={x:Reference this}}" 
+                   HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+            <Label Grid.Column="6"
+                   Text="{Binding Train.Length, Source={x:Reference this}}" 
+                   HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+            <Label Grid.Column="7"
+                   Text="{Binding Train.Power, Source={x:Reference this}}" 
+                   HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+            <ImageButton Grid.Column="8"
+                         Source="{AppThemeBinding Light=edit_dark.png, Dark=edit_light.png}"
+                         Command="{Binding EditCommand, Source={x:Reference this}}"
+                         HorizontalOptions="End" VerticalOptions="Center" 
+                         BackgroundColor="Transparent"
+                         WidthRequest="35" HeightRequest="35" />
+            <ImageButton Grid.Column="9"
+                         Source="{AppThemeBinding Light=delete_dark.png, Dark=delete_light.png}"
+                         Command="{Binding DeleteCommand, Source={x:Reference this}}"
+                         HorizontalOptions="End" VerticalOptions="Center" 
+                         BackgroundColor="Transparent"
+                         WidthRequest="35" HeightRequest="35" />
+        </Grid>
+    </Border>
+</ContentView>

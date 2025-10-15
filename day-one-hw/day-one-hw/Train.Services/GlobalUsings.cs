@@ -1,6 +1,11 @@
 global using ErrorOr;
+global using Google.Apis.Auth.OAuth2;
+global using Google.Apis.Drive.v3;
+global using Google.Apis.Drive.v3.Data;
+global using Google.Apis.Services;
 global using Train.Core.Interfaces;
-global using Train.Database;
-global using Train.Database.Entities;
-global using Microsoft.EntityFrameworkCore;
 global using Train.Core.Models;
+global using Train.Core.Models.Settings;
+global using Train.Database;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Maui.Storage;

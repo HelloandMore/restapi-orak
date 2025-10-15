@@ -1,22 +1,28 @@
-using FluentValidation.Results;
-using System.Globalization;
-
 namespace Train.DesktopApp.Converters;
 
 public class ValidationResultToErrorMessagesConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is ValidationResult validationResult && !validationResult.IsValid)
+        if(value is not ValidationResult validationResult || validationResult.IsValid)
         {
-            return string.Join(Environment.NewLine, validationResult.Errors.Select(e => e.ErrorMessage));
+            return null;
         }
+        if (parameter == null)
+        {
+            return null;
+        }
+        
+        var property = parameter as string;
+        var errorMessages = validationResult.Errors.Where(x => x.PropertyName == property)
+                                                   .Select(x => x.ErrorMessage);
 
-        return string.Empty;
+        return string.Join(Environment.NewLine, errorMessages);
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        // This converter is intended for one-way binding only
+        return null;
     }
 }

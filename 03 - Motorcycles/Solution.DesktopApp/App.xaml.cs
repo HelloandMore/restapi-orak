@@ -25,7 +25,7 @@ public partial class App : Application
         await toast.Show(new CancellationTokenSource().Token);
     }
 
-    private void MaximizeWindow()
+    private void MaximizeWindow()   
     {
         Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
         {

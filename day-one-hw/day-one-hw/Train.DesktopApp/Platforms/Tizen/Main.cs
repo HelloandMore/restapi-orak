@@ -2,7 +2,7 @@ using System;
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 
-namespace Solution.DesktopApp
+namespace Train.DesktopApp
 {
     internal class Program : MauiApplication
     {

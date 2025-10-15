@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace Solution.DesktopApp
+namespace Train.DesktopApp
 {
     public class Program
     {
