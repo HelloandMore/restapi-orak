@@ -1,10 +1,9 @@
 namespace Train.Api.Controllers;
 
-[Route("api/[controller]")]
 public class TrainController(ITrainService trainService) : BaseController
 {
     [HttpGet]
-    [Route("all")]
+    [Route("api/train/all")]
     public async Task<IActionResult> GetAllAsync()
     {
         var result = await trainService.GetAllAsync();
@@ -15,7 +14,7 @@ public class TrainController(ITrainService trainService) : BaseController
     }
 
     [HttpGet]
-    [Route("page/{page}")]
+    [Route("api/train/page/{page}")]
     public async Task<IActionResult> GetPagedAsync([FromRoute][Required] int page = 1)
     {
         var result = await trainService.GetPagedAsync(page);
@@ -26,7 +25,7 @@ public class TrainController(ITrainService trainService) : BaseController
     }
 
     [HttpGet]
-    [Route("{id}")]
+    [Route("api/train/id/{id}")]
     public async Task<IActionResult> GetByIdAsync([FromRoute][Required] string id)
     {
         var result = await trainService.GetByIdAsync(id);
@@ -37,7 +36,7 @@ public class TrainController(ITrainService trainService) : BaseController
     }
 
     [HttpDelete]
-    [Route("{id}")]
+    [Route("api/train/delete/{id}")]
     public async Task<IActionResult> DeleteByIdAsync([FromRoute][Required] string id)
     {
         var result = await trainService.DeleteAsync(id);
@@ -48,6 +47,7 @@ public class TrainController(ITrainService trainService) : BaseController
     }
 
     [HttpPost]
+    [Route("api/train/create")]
     public async Task<IActionResult> CreateAsync([FromBody][Required] TrainModel model)
     {
         var result = await trainService.CreateAsync(model);
@@ -58,6 +58,7 @@ public class TrainController(ITrainService trainService) : BaseController
     }
 
     [HttpPut]
+    [Route("api/train/update")]
     public async Task<IActionResult> UpdateAsync([FromBody][Required] TrainModel model)
     {
         var result = await trainService.UpdateAsync(model);

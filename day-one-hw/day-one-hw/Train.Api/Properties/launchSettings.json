@@ -2,11 +2,10 @@
   "profiles": {
     "Train.Api": {
       "commandName": "Project",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:54783;http://localhost:54784"
+      "applicationUrl": "https://localhost:3000;http://localhost:3001"
     }
   }
 }

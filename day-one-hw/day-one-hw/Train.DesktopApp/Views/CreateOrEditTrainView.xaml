@@ -170,7 +170,14 @@
                         ConverterParameter={x:Static validator:TrainModelValidator.WeightProperty}
                     }">
 
-                    <editors:SfNumericEntry Value="{Binding Weight}" AllowNull="True" />
+                    <editors:SfNumericEntry Value="{Binding Weight}" AllowNull="True">
+                        <editors:SfNumericEntry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="ValueChanged"
+                                                            BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
+                                                            Command="{Binding ValidateCommand}" 
+                                                            CommandParameter="{x:Static validator:TrainModelValidator.WeightProperty}" />
+                        </editors:SfNumericEntry.Behaviors>
+                    </editors:SfNumericEntry>
                 </sf:SfTextInputLayout>
 
                 <sf:SfTextInputLayout
@@ -188,7 +195,14 @@
                         ConverterParameter={x:Static validator:TrainModelValidator.LengthProperty}
                     }">
 
-                    <editors:SfNumericEntry Value="{Binding Length}" AllowNull="True" />
+                    <editors:SfNumericEntry Value="{Binding Length}" AllowNull="True">
+                        <editors:SfNumericEntry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="ValueChanged"
+                                                            BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
+                                                            Command="{Binding ValidateCommand}" 
+                                                            CommandParameter="{x:Static validator:TrainModelValidator.LengthProperty}" />
+                        </editors:SfNumericEntry.Behaviors>
+                    </editors:SfNumericEntry>
                 </sf:SfTextInputLayout>
 
                 <sf:SfTextInputLayout
@@ -206,7 +220,14 @@
                         ConverterParameter={x:Static validator:TrainModelValidator.GaugeProperty}
                     }">
 
-                    <editors:SfNumericEntry Value="{Binding Gauge}" AllowNull="True" />
+                    <editors:SfNumericEntry Value="{Binding Gauge}" AllowNull="True">
+                        <editors:SfNumericEntry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="ValueChanged"
+                                                            BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
+                                                            Command="{Binding ValidateCommand}" 
+                                                            CommandParameter="{x:Static validator:TrainModelValidator.GaugeProperty}" />
+                        </editors:SfNumericEntry.Behaviors>
+                    </editors:SfNumericEntry>
                 </sf:SfTextInputLayout>
 
                 <sf:SfTextInputLayout
@@ -224,7 +245,14 @@
                         ConverterParameter={x:Static validator:TrainModelValidator.PowerProperty}
                     }">
 
-                    <editors:SfNumericEntry Value="{Binding Power}" AllowNull="True" />
+                    <editors:SfNumericEntry Value="{Binding Power}" AllowNull="True">
+                        <editors:SfNumericEntry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="ValueChanged"
+                                                            BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
+                                                            Command="{Binding ValidateCommand}" 
+                                                            CommandParameter="{x:Static validator:TrainModelValidator.PowerProperty}" />
+                        </editors:SfNumericEntry.Behaviors>
+                    </editors:SfNumericEntry>
                 </sf:SfTextInputLayout>
 
                 <Button Text="Submit"
