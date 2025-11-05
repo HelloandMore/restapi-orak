@@ -1,0 +1,3 @@
+1. Database plan & testing
+2. API & testing
+3. MAUI & testing
