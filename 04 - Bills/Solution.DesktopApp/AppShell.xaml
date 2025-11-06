@@ -4,11 +4,32 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Solution.DesktopApp"
-    Title="Solution.DesktopApp">
+    xmlns:viewModels="clr-namespace:Solution.DesktopApp.ViewModels"
+    xmlns:views="clr-namespace:Solution.DesktopApp.Views"
+    x:DataType="viewModels:AppShellViewModel"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Számla Nyilvántartó Rendszer">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <Shell.Resources>
+        <Style x:Key="ShellContentStyle" TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="#090909" />
+            <Setter Property="Shell.TitleColor" Value="WhiteSmoke" />
+            <Setter Property="Shell.Background" Value="Gray" />
+        </Style>
+    </Shell.Resources>
+
+    <Shell.MenuBarItems>
+        <MenuBarItem Text="Program">
+            <MenuFlyoutItem Text="Kilépés" Command="{Binding ExitCommand}" />
+        </MenuBarItem>
+
+        <MenuBarItem Text="Számla">
+            <MenuFlyoutItem Text="Új számla" Command="{Binding AddNewBillCommand}" />
+            <MenuFlyoutItem Text="Áttekintés" Command="{Binding ListAllBillsCommand}" />
+        </MenuBarItem>
+    </Shell.MenuBarItems>
+
+    <ShellContent ContentTemplate="{DataTemplate views:MainView}"
+                  Route="MainView" />
 
 </Shell>

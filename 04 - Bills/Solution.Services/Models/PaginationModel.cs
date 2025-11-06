@@ -1,0 +1,8 @@
+namespace Solution.Services.Models;
+
+public class PaginationModel<T>
+{
+    public List<T> Items { get; set; } = [];
+    public int Count { get; set; }
+    public int TotalPages { get; set; }
+}
