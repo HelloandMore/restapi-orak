@@ -2,7 +2,7 @@ namespace Solution.Services;
 
 public class BillService(AppDbContext dbContext) : IBillService
 {
-    private const int ROW_COUNT = 20;
+    private const int ROW_COUNT = 10;
 
     public async Task<ErrorOr<BillModel>> CreateAsync(BillModel model)
     {

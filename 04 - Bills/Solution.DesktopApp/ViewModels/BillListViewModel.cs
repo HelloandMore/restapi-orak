@@ -19,19 +19,16 @@ public partial class BillListViewModel : ObservableObject
     [ObservableProperty]
     private string pageInfo = "1 / 1";
 
-    public IAsyncRelayCommand LoadBillsCommand { get; }
-    public IAsyncRelayCommand<BillModel> EditBillCommand { get; }
-    public IAsyncRelayCommand<BillModel> DeleteBillCommand { get; }
-    public IAsyncRelayCommand NextPageCommand { get; }
-    public IAsyncRelayCommand PreviousPageCommand { get; }
+    public IAsyncRelayCommand LoadBillsCommand => new AsyncRelayCommand(LoadBillsAsync);
+    public IAsyncRelayCommand<BillModel> EditBillCommand => new AsyncRelayCommand<BillModel>(EditBillAsync);
+    public IAsyncRelayCommand<BillModel> DeleteBillCommand => new AsyncRelayCommand<BillModel>(DeleteBillAsync);
+    public IAsyncRelayCommand NextPageCommand { get; private set; }
+    public IAsyncRelayCommand PreviousPageCommand { get; private set; }
 
     public BillListViewModel(IBillService billService)
     {
         _billService = billService;
 
-        LoadBillsCommand = new AsyncRelayCommand(LoadBillsAsync);
-        EditBillCommand = new AsyncRelayCommand<BillModel>(EditBillAsync);
-        DeleteBillCommand = new AsyncRelayCommand<BillModel>(DeleteBillAsync);
         NextPageCommand = new AsyncRelayCommand(NextPageAsync, () => CurrentPage < TotalPages);
         PreviousPageCommand = new AsyncRelayCommand(PreviousPageAsync, () => CurrentPage > 1);
     }
@@ -114,15 +111,16 @@ public partial class BillListViewModel : ObservableObject
 
     private async Task NextPageAsync()
     {
-        if (CurrentPage < TotalPages)
-        {
-            CurrentPage++;
-            await LoadBillsAsync();
-        }
+        if (isLoading) return;
+
+        CurrentPage++;
+        await LoadBillsAsync();
     }
 
     private async Task PreviousPageAsync()
     {
+        if (isLoading) return;
+
         if (CurrentPage > 1)
         {
             CurrentPage--;

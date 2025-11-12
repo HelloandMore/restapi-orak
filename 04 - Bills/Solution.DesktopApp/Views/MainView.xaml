@@ -6,7 +6,7 @@
              x:DataType="viewModels:MainViewModel"
              Title="Számla Nyilvántartó Rendszer">
     
-    <Grid BackgroundColor="#F5F5F5">
+    <Grid BackgroundColor="#0a0a0a">
         <VerticalStackLayout 
             HorizontalOptions="Center"
             VerticalOptions="Center"
@@ -16,12 +16,13 @@
                    FontSize="32"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
-                   TextColor="#333333" />
+                   TextColor="#cccccc" />
             
             <Label Text="Használja a menüt a műveletek végrehajtásához"
                    FontSize="16"
                    HorizontalOptions="Center"
-                   TextColor="#666666" />
+                   TextColor="#999999" />
+            <Image Source="bill.png" Aspect="AspectFit" HeightRequest="500" />
         </VerticalStackLayout>
     </Grid>
     
