@@ -6,13 +6,11 @@ public class BillService(AppDbContext dbContext) : IBillService
 
     public async Task<ErrorOr<BillModel>> CreateAsync(BillModel model)
     {
-        // Set current date if not provided
         if (!model.BillDate.HasValue)
         {
             model.BillDate = DateTime.Now;
         }
 
-        // Check if bill with same number already exists
         bool exists = await dbContext.Bills.AnyAsync(x => x.BillNumber.ToLower() == model.BillNumber.ToLower().Trim());
 
         if (exists)
@@ -39,20 +37,17 @@ public class BillService(AppDbContext dbContext) : IBillService
             return Error.NotFound(description: "Bill not found.");
         }
 
-        // Set current date if not provided
         if (!model.BillDate.HasValue)
         {
             model.BillDate = DateTime.Now;
         }
 
-        // Update bill properties only if provided
         if (!string.IsNullOrWhiteSpace(model.BillNumber))
         {
             existingBill.BillNumber = model.BillNumber;
         }
         existingBill.BillDate = model.BillDate.Value;
 
-        // Remove items that are no longer in the model
         var itemsToRemove = existingBill.Items
             .Where(ei => !model.Items.Any(mi => mi.Id == ei.Id))
             .ToList();
@@ -62,21 +57,18 @@ public class BillService(AppDbContext dbContext) : IBillService
             dbContext.BillItems.Remove(item);
         }
 
-        // Update or add items
         foreach (var modelItem in model.Items)
         {
             var existingItem = existingBill.Items.FirstOrDefault(i => i.Id == modelItem.Id);
             
             if (existingItem != null)
             {
-                // Update existing item
                 existingItem.ItemName = modelItem.ItemName;
                 existingItem.Quantity = modelItem.Quantity.Value;
                 existingItem.UnitPrice = modelItem.UnitPrice.Value;
             }
             else
             {
-                // Add new item
                 var newItem = modelItem.ToEntity();
                 newItem.BillId = existingBill.Id;
                 existingBill.Items.Add(newItem);

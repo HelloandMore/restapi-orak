@@ -57,7 +57,6 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
         };
     }
 
-    // Handle the navigation parameter
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.TryGetValue("BillId", out var billIdObj) && billIdObj != null)
@@ -133,7 +132,6 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
 
         Items.Add(newItem);
 
-        // Clear input fields
         ItemName = string.Empty;
         Quantity = 1;
         UnitPrice = 0;
@@ -145,12 +143,10 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
     {
         if (item == null) return;
 
-        // Populate input fields with item data for editing
         ItemName = item.ItemName ?? string.Empty;
         Quantity = item.Quantity ?? 1;
         UnitPrice = item.UnitPrice ?? 0;
 
-        // Remove the item from the list (will be re-added when Add is clicked)
         Items.Remove(item);
 
         await Task.CompletedTask;
