@@ -11,4 +11,3 @@ global using FluentValidation;
 global using FluentValidation.AspNetCore;
 global using Microsoft.AspNetCore.Http;
 global using System.ComponentModel.DataAnnotations;
-

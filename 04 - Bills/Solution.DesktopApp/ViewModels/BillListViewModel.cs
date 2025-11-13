@@ -22,15 +22,12 @@ public partial class BillListViewModel : ObservableObject
     public IAsyncRelayCommand LoadBillsCommand => new AsyncRelayCommand(LoadBillsAsync);
     public IAsyncRelayCommand<BillModel> EditBillCommand => new AsyncRelayCommand<BillModel>(EditBillAsync);
     public IAsyncRelayCommand<BillModel> DeleteBillCommand => new AsyncRelayCommand<BillModel>(DeleteBillAsync);
-    public IAsyncRelayCommand NextPageCommand { get; private set; }
-    public IAsyncRelayCommand PreviousPageCommand { get; private set; }
+    public IAsyncRelayCommand NextPageCommand => new AsyncRelayCommand(NextPageAsync, () => CurrentPage < TotalPages);
+    public IAsyncRelayCommand PreviousPageCommand => new AsyncRelayCommand(PreviousPageAsync, () => CurrentPage > 1);
 
     public BillListViewModel(IBillService billService)
     {
         _billService = billService;
-
-        NextPageCommand = new AsyncRelayCommand(NextPageAsync, () => CurrentPage < TotalPages);
-        PreviousPageCommand = new AsyncRelayCommand(PreviousPageAsync, () => CurrentPage > 1);
     }
 
     public async Task InitializeAsync()
@@ -41,36 +38,27 @@ public partial class BillListViewModel : ObservableObject
     private async Task LoadBillsAsync()
     {
         IsLoading = true;
-        try
+        
+        var result = await _billService.GetPagedAsync(CurrentPage);
+
+        if (result.IsError)
         {
-            var result = await _billService.GetPagedAsync(CurrentPage);
-
-            if (result.IsError)
-            {
-                await Shell.Current.DisplayAlert("Hiba", "Nem sikerült betölteni a számlákat.", "OK");
-                return;
-            }
-
-            Bills.Clear();
-            foreach (var bill in result.Value.Items)
-            {
-                Bills.Add(bill);
-            }
-
-            TotalPages = result.Value.TotalPages;
-            PageInfo = $"{CurrentPage} / {TotalPages}";
-
-            NextPageCommand.NotifyCanExecuteChanged();
-            PreviousPageCommand.NotifyCanExecuteChanged();
+            await Shell.Current.DisplayAlert("Hiba", "Nem sikerült betölteni a számlákat.", "OK");
+            return;
         }
-        catch (Exception ex)
+
+        Bills.Clear();
+        foreach (var bill in result.Value.Items)
         {
-            await Shell.Current.DisplayAlert("Hiba", $"Váratlan hiba történt: {ex.Message}", "OK");
+            Bills.Add(bill);
         }
-        finally
-        {
-            IsLoading = false;
-        }
+
+        TotalPages = result.Value.TotalPages;
+        PageInfo = $"{CurrentPage} / {TotalPages}";
+
+        NextPageCommand.NotifyCanExecuteChanged();
+        PreviousPageCommand.NotifyCanExecuteChanged();
+        IsLoading = false;
     }
 
     private async Task EditBillAsync(BillModel? bill)
