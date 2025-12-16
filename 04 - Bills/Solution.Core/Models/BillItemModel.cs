@@ -1,4 +1,4 @@
-namespace Solution.Services.Models;
+namespace Solution.Core.Models;
 
 public partial class BillItemModel : ObservableObject
 {
