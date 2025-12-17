@@ -3,6 +3,13 @@ namespace Solution.DesktopApp.ViewModels;
 public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttributable
 {
     private readonly IBillService _billService;
+    private BillModelValidator validator => new BillModelValidator();
+    private BillItemModelValidator itemValidator => new BillItemModelValidator();
+
+    public IRelayCommand ValidateCommand => new AsyncRelayCommand<string>(OnValidateAsync);
+
+    [ObservableProperty]
+    private ValidationResult validationResult = new ValidationResult();
 
     [ObservableProperty]
     private int? billId;
@@ -12,9 +19,15 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
 
     [ObservableProperty]
     private DateTime billDate = DateTime.Now;
-            
+
     [ObservableProperty]
     private ObservableCollection<BillItemModel> items = [];
+
+    [ObservableProperty]
+    private bool isEditMode = false;
+
+    [ObservableProperty]
+    private string title = "Új számla";
 
     [ObservableProperty]
     private string itemName = string.Empty;
@@ -28,12 +41,6 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
     [ObservableProperty]
     private decimal totalAmount = 0;
 
-    [ObservableProperty]
-    private bool isEditMode = false;
-
-    [ObservableProperty]
-    private string title = "Új számla";
-
     public IAsyncRelayCommand AddItemCommand { get; }
     public IAsyncRelayCommand<BillItemModel> EditItemCommand { get; }
     public IAsyncRelayCommand<BillItemModel> DeleteItemCommand { get; }
@@ -44,37 +51,25 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
     {
         _billService = billService;
 
-        AddItemCommand = new AsyncRelayCommand(AddItemAsync, CanAddItem);
+        AddItemCommand = new AsyncRelayCommand(AddItemAsync);
         EditItemCommand = new AsyncRelayCommand<BillItemModel>(EditItemAsync);
         DeleteItemCommand = new AsyncRelayCommand<BillItemModel>(DeleteItemAsync);
-        SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
+        SaveCommand = new AsyncRelayCommand(SaveAsync);
         CancelCommand = new AsyncRelayCommand(CancelAsync);
 
-        Items.CollectionChanged += (s, e) =>
-        {
-            CalculateTotalAmount();
-            SaveCommand.NotifyCanExecuteChanged();
-        };
+        Items.CollectionChanged += (s, e) => CalculateTotalAmount();
     }
 
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    public async void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.TryGetValue("BillId", out var billIdObj) && billIdObj != null)
         {
             if (int.TryParse(billIdObj.ToString(), out var id))
             {
-                BillId = id;
+                IsEditMode = true;
+                Title = "Számla szerkesztése";
+                await LoadBillAsync(id);
             }
-        }
-    }
-
-    partial void OnBillIdChanged(int? value)
-    {
-        if (value.HasValue)
-        {
-            IsEditMode = true;
-            Title = "Számla szerkesztése";
-            _ = LoadBillAsync(value.Value);
         }
         else
         {
@@ -83,9 +78,19 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
         }
     }
 
-    partial void OnItemNameChanged(string value) => AddItemCommand.NotifyCanExecuteChanged();
-    partial void OnQuantityChanged(int value) => AddItemCommand.NotifyCanExecuteChanged();
-    partial void OnUnitPriceChanged(decimal value) => AddItemCommand.NotifyCanExecuteChanged();
+    private async Task OnValidateAsync(string propertyName)
+    {
+        var billModel = new BillModel
+        {
+            Id = BillId,
+            BillNumber = BillNumber,
+            BillDate = BillDate,
+            Items = Items.ToList()
+        };
+        
+        validationResult = await validator.ValidateAsync(billModel);
+        OnPropertyChanged(nameof(ValidationResult));
+    }
 
     private async Task LoadBillAsync(int id)
     {
@@ -99,6 +104,7 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
         }
 
         var bill = result.Value;
+        BillId = bill.Id;
         BillNumber = bill.BillNumber ?? string.Empty;
         BillDate = bill.BillDate ?? DateTime.Now;
 
@@ -114,13 +120,6 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
         CalculateTotalAmount();
     }
 
-    private bool CanAddItem()
-    {
-        return !string.IsNullOrWhiteSpace(ItemName) 
-               && Quantity >= 1 
-               && UnitPrice >= 1;
-    }
-
     private async Task AddItemAsync()
     {
         var newItem = new BillItemModel
@@ -130,13 +129,19 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
             UnitPrice = UnitPrice
         };
 
+        var itemValidation = await itemValidator.ValidateAsync(newItem);
+        if (!itemValidation.IsValid)
+        {
+            var errorMessages = string.Join("\n", itemValidation.Errors.Select(e => $"• {e.ErrorMessage}"));
+            await Shell.Current.DisplayAlert("Validációs hiba", errorMessages, "OK");
+            return;
+        }
+
         Items.Add(newItem);
 
         ItemName = string.Empty;
         Quantity = 1;
         UnitPrice = 0;
-
-        await Task.CompletedTask;
     }
 
     private async Task EditItemAsync(BillItemModel? item)
@@ -172,30 +177,29 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
         TotalAmount = Items.Sum(i => (i.Quantity ?? 0) * (i.UnitPrice ?? 0));
     }
 
-    private bool CanSave()
-    {
-        return Items.Count > 0;
-    }
-
     private async Task SaveAsync()
     {
-        if (string.IsNullOrWhiteSpace(BillNumber))
-        {
-            await Shell.Current.DisplayAlert("Hiányzó adat", "Kérem adja meg a számlaszámot.", "OK");
-            return;
-        }
-
-        var bill = new BillModel
+        var billModel = new BillModel
         {
             Id = BillId,
             BillNumber = BillNumber,
             BillDate = BillDate,
             Items = Items.ToList()
         };
+        
+        validationResult = await validator.ValidateAsync(billModel);
+        OnPropertyChanged(nameof(ValidationResult));
+
+        if (!validationResult.IsValid)
+        {
+            var errorMessages = string.Join("\n", validationResult.Errors.Select(e => $"• {e.ErrorMessage}"));
+            await Shell.Current.DisplayAlert("Validációs hiba", errorMessages, "OK");
+            return;
+        }
 
         if (IsEditMode)
         {
-            var updateResult = await _billService.UpdateAsync(bill);
+            var updateResult = await _billService.UpdateAsync(billModel);
             if (updateResult.IsError)
             {
                 var errorMessage = updateResult.FirstError.Description;
@@ -205,7 +209,7 @@ public partial class CreateOrEditBillViewModel : ObservableObject, IQueryAttribu
         }
         else
         {
-            var createResult = await _billService.CreateAsync(bill);
+            var createResult = await _billService.CreateAsync(billModel);
             if (createResult.IsError)
             {
                 var errorMessage = createResult.FirstError.Description;

@@ -10,7 +10,6 @@
 
     <Grid RowDefinitions="Auto,*,Auto" Padding="20" BackgroundColor="#0A0A0A">
         
-        <!-- Header -->
         <Border Grid.Row="0" 
                 BackgroundColor="Black" 
                 Stroke="#222222" 
@@ -44,7 +43,6 @@
             </Grid>
         </Border>
 
-        <!-- Bills List -->
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Spacing="5">
                 <CollectionView ItemsSource="{Binding Bills}">
@@ -99,7 +97,6 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
-                <!-- Loading Indicator -->
                 <ActivityIndicator IsRunning="{Binding IsLoading}"
                                   IsVisible="{Binding IsLoading}"
                                   HorizontalOptions="Center"
@@ -109,7 +106,6 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Pagination -->
         <Border Grid.Row="2" 
                 BackgroundColor="Black" 
                 Stroke="#dddddd" 

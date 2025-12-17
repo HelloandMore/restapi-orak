@@ -14,3 +14,5 @@ global using Solution.Services;
 global using System.Collections.ObjectModel;
 global using Solution.Validators;
 global using FluentValidation;
+global using FluentValidation.Results;
+global using System.Globalization;
