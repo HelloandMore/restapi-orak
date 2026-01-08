@@ -8,7 +8,7 @@
   "Environment": "Development",
   "AllowedHosts": "*",
   "ConnectionStrings": {
-    "DefaultConnection": "Data Source=(localdb)\\mssqllocaldb;Database=AuthDB;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;"
+    "DefaultConnection": "Data Source=.\\SQLEXPRESS;Database=AuthDB;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;"
   },
   "JWT": {
     "Issuer": "MyApp",

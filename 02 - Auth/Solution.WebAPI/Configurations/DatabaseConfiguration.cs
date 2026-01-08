@@ -16,7 +16,6 @@ public static class DatabaseConfiguration
                            options.EnableRetryOnFailure();
                            options.CommandTimeout(300);
                        })
-            //.LogTo(Console.WriteLine) //please let it here for debugging purposes
             );
 
             return builder;
