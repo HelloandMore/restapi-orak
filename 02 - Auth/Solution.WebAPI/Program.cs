@@ -7,7 +7,11 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.ConfigureDatabase()
-       .LoadEnvironmentVariables();
+       .ConfigureDI()
+       .LoadEnvironmentVariables()
+       .LoadSettings()
+       .UseIdentity()
+       .UseSecurity();
 
 var app = builder.Build();
 
@@ -20,6 +24,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseRouting();
+
+app.UseSecurity();
 
 app.MapControllers();
 

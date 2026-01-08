@@ -1,0 +1,13 @@
+﻿global using System.Text;
+global using ErrorOr;
+global using Solution.Domain.Models.Requests.Security;
+global using Solution.Domain.Models.Responses;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.Extensions.Options;
+global using Solution.Domain.Database.Entities;
+global using Solution.Domain.Models.Settings;
+global using Microsoft.IdentityModel.Tokens;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using Solution.Domain.Models.Views;
+global using Microsoft.EntityFrameworkCore;

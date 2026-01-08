@@ -23,4 +23,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="User\" />
+    <Folder Include="Security\" />
+  </ItemGroup>
+
 </Project>
