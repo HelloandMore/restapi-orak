@@ -1,0 +1,21 @@
+﻿namespace Solution.WebAPI.Controllers;
+
+[ApiController]
+//[ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.InternalServerError)]
+[ProducesResponseType(statusCode: 400, type: typeof(BadRequestObjectResult))]
+public class UserController(IUserService userService) : ControllerBase
+{
+    [HttpGet]
+    [Route("api/users")]
+    [Authorize]
+    [ProducesResponseType(type: typeof(ICollection<UserModel>), statusCode: 200)]
+    [EndpointDescription("Retrieves all users.")]
+    public async Task<IActionResult> GetUsersAsync()
+    {
+        var result = await userService.GetAllUsers();
+        return result.Match(
+          value => Ok(value),
+          errors => errors.ToProblemResult()
+        );
+    }
+}
