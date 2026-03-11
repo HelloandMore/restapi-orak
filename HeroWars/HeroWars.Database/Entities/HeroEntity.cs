@@ -15,6 +15,9 @@ public class HeroEntity
     public HeroRole Role { get; set; }
 
     [Required]
+    public int Intelligence { get; set; }
+
+    [Required]
     public int Agility { get; set; }
     
     [Required]

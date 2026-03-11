@@ -1,12 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = "Server=(localdb)\\mssqllocaldb;Database=HerowarsDB;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;";
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? "Server=(localdb)\\mssqllocaldb;Database=HerowarsDB;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;";
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddTransient<IHeroService, HeroService>();
 
 var app = builder.Build();
 

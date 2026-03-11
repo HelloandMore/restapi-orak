@@ -1,2 +1,9 @@
 ﻿global using HeroWars.Database;
 global using Microsoft.EntityFrameworkCore;
+global using ErrorOr;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.ModelBinding;
+global using HeroWars.Services;
+global using HeroWars.Services.Interfaces;
+global using HeroWars.Services.Models;
+global using System.ComponentModel.DataAnnotations;
