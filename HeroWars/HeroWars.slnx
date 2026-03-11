@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="HeroWars.Database/HeroWars.Database.csproj" />
+  <Project Path="HeroWars.Services/HeroWars.Services.csproj" />
+  <Project Path="HeroWars/HeroWars.API.csproj" />
+</Solution>
