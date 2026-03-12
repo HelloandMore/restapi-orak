@@ -6,6 +6,6 @@ public interface IHeroService
     Task<ErrorOr<Success>> UpdateAsync(HeroModel model);
     Task<ErrorOr<Success>> DeleteAsync(int heroId);
     Task<ErrorOr<HeroModel>> GetByIdAsync(int heroId);
-    Task<ErrorOr<List<HeroModel>>> GetAllAsync();
+    Task<ErrorOr<ICollection<HeroModel>>> GetAllAsync();
     Task<ErrorOr<PaginationModel<HeroModel>>> GetPagedAsync(int page = 1);
 }

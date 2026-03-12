@@ -2,6 +2,7 @@
 
 namespace HeroWars.API.Controllers;
 
+[ApiController]
 public class HeroController(IHeroService heroService) : BaseController
 {
     [HttpGet]
