@@ -6,7 +6,7 @@ Id,Name,OrderType,Species,Homeworld,Era,Rank,LightsaberColor,Master,Apprentice,F
 5,Mace Windu,Jedi,Human,Haruun Kal,CloneWars,Master,Purple,None,Depa Billaba,Vaapad,false
 6,Ahsoka Tano,Jedi,Human,Shili,CloneWars,Padawan,Green,Anakin Skywalker,None,Force Stealth,true
 7,Kit Fisto,Jedi,Nautolan,Glee Anselm,CloneWars,Master,Green,None,None,Underwater Combat,true
-8,Plo Koon,Jedi,Kel Dor, Dorin,CloneWars,Master,Blue,None,Aayla Secura,Force Lightning Resistance,false
+8,Plo Koon,Jedi,Kel Dor,Dorin,CloneWars,Master,Blue,None,Aayla Secura,Force Lightning Resistance,false
 9,Saesee Tiin,Jedi,Iktotchi,Iktotch,CloneWars,Master,Blue,None,None,Starfighter Combat,false
 10,Ki-Adi-Mundi,Jedi,Cerean,Cerea,CloneWars,Master,Blue,None,Stass Allie,Force Strategy,false
 11,Darth Sidious,Sith,Human,Naboo,Empire,DarkLord,Red,Darth Plagueis,Darth Vader,Force Lightning,false
@@ -20,7 +20,7 @@ Id,Name,OrderType,Species,Homeworld,Era,Rank,LightsaberColor,Master,Apprentice,F
 19,Exar Kun,Sith,Human,Dantooine,OldRepublic,DarkLord,Red,None,None,Force Magic,false
 20,Malak,Sith,Human,Mandalore,OldRepublic,Lord,Red,Exar Kun,None,Force Combat,false
 21,Depa Billaba,Jedi,Human,Korriban,CloneWars,Master,Blue,Mace Windu,None,Force Stealth,false
-22,Ben Solo,Jedi,Human,Chandrila,FirstOrder,Padawan,Luke Skywalker,None,Force Projection,true
+22,Ben Solo,Jedi,Human,Chandrila,FirstOrder,Padawan,Blue,Luke Skywalker,None,Force Projection,true
 23,Luminara Unduli,Jedi,Mirialan,Mirial,CloneWars,Master,Blue,None,Aayla Secura,Force Healing,false
 24,Aayla Secura,Jedi,Twi'lek,Ryloth,CloneWars,Master,Blue,Kit Fisto,None,Agility,false
 25,Qui-Gon Jinn,Jedi,Human,Coruscant,CloneWars,Master,Green,None,Obi-Wan Kenobi,Force Meditation,false
