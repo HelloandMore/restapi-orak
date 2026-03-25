@@ -14,7 +14,8 @@ CREATE TABLE ForceUsers
     IsAlive BIT
 );
 
-INSERT INTO ForceUsers VALUES
+INSERT INTO ForceUsers (Id, Name, OrderType, Species, Homeworld, Era, Rank, LightsaberColor, Master, Apprentice, ForceSpecialty, IsAlive)
+VALUES
 (1,'Yoda','Jedi','Unknown','Unknown','CloneWars','Master','Green','None','Luke Skywalker','Force Wisdom',0),
 (2,'Luke Skywalker','Jedi','Human','Tatooine','Rebellion','Master','Green','Yoda','Ben Solo','Force Projection',1),
 (3,'Obi-Wan Kenobi','Jedi','Human','Stewjon','CloneWars','Master','Blue','Qui-Gon Jinn','Anakin Skywalker','Mind Trick',0),
@@ -36,7 +37,7 @@ INSERT INTO ForceUsers VALUES
 (19,'Exar Kun','Sith','Human','Dantooine','OldRepublic','DarkLord','Red','None','None','Force Magic',0),
 (20,'Malak','Sith','Human','Mandalore','OldRepublic','Lord','Red','Exar Kun','None','Force Combat',0),
 (21,'Depa Billaba','Jedi','Human','Korriban','CloneWars','Master','Blue','Mace Windu','None','Force Stealth',0),
-(22,'Ben Solo','Jedi','Human','Chandrila','FirstOrder','Padawan','Luke Skywalker','None','Force Projection',1),
+(22,'Ben Solo','Jedi','Human','Chandrila','FirstOrder','Padawan','Blue','Luke Skywalker','None','Force Projection',1),
 (23,'Luminara Unduli','Jedi','Mirialan','Mirial','CloneWars','Master','Blue','None','Aayla Secura','Force Healing',0),
-(24,'Aayla Secura','Jedi','Twi\'lek','Ryloth','CloneWars','Master','Blue','Kit Fisto','None','Agility',0),
+(24,'Aayla Secura','Jedi','Twi''lek','Ryloth','CloneWars','Master','Blue','Kit Fisto','None','Agility',0),
 (25,'Qui-Gon Jinn','Jedi','Human','Coruscant','CloneWars','Master','Green','None','Obi-Wan Kenobi','Force Meditation',0);
