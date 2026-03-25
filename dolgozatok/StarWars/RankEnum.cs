@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace StarWars;
 
-namespace StarWars
+public enum RankEnum
 {
-    internal class RankEnum
-    {
-    }
+    Youngling,
+    Padawan,
+    Knight,
+    Master,
+    Lord,
+    Apprentice,
+    DarkLord
 }

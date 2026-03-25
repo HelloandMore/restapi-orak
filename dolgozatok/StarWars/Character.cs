@@ -21,13 +21,15 @@ public class Character
 
     public string Name { get; set; }
 
-    public string OrderType { get; set; }
+    public OrderEnum OrderType { get; set; }
 
     public string Species { get; set; }
 
     public string Homeworld { get; set; }
 
-    public string Rank { get; set; }
+    public EraEnum Era { get; set; }
+
+    public RankEnum Rank { get; set; }
 
     public string LightsaberColor { get; set; }
 
@@ -39,4 +41,8 @@ public class Character
 
     public bool IsAlive { get; set; }
 
+    public override string ToString()
+    {
+        return $"{Name} ({OrderType}) - {Rank}";
+    }
 }
