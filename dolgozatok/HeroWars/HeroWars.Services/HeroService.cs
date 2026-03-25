@@ -47,12 +47,12 @@ public class HeroService(AppDbContext dbContext) : IHeroService
 
     public async Task<ErrorOr<HeroModel>> GetByIdAsync(int heroId)
     {
-        var hero = await dbContext.Heroes.SingleOrDefaultAsync(x => x.Id == heroId);
+        var hero = await dbContext.Heroes.FirstOrDefaultAsync(x => x.Id == heroId);
 
         return hero is null ? (ErrorOr<HeroModel>)Error.NotFound(description: "Hero not found.") : (ErrorOr<HeroModel>)new HeroModel(hero);
     }
 
-    public async Task<ErrorOr<ICollection<HeroModel>>> GetAllAsync() =>
+    public async Task<ErrorOr<List<HeroModel>>> GetAllAsync() =>
         await dbContext.Heroes
             .AsNoTracking()
             .Select(x => new HeroModel(x))
