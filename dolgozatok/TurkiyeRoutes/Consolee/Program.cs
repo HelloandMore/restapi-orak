@@ -1,4 +1,4 @@
-TurkeyRoutes
+﻿/*TurkeyRoutes
 
 Az adatállomány törökországi városok közötti utazásokat tartalmaz.
 Minden egyes sor egy konkrét útvonalat ír le, amely megadja,
@@ -63,42 +63,48 @@ Olvasd be a CSV fájlt egy megfelelő adatszerkezetbe.
    
 10. Csoportosítsd az adatokat érkezési város szerint, és határozd meg:
     - hány út érkezik az adott városba
-    - az átlagos távolságot városonként
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+    - az átlagos távolságot városonként */
 var fileData = await File.ReadAllLinesAsync("adatok.csv", Encoding.UTF8);
 var routes = new List<Route>();
-
-if (fileData.Length > 1)
+foreach (var line in fileData)
 {
-    foreach (var line in fileData.Skip(1))
+    if (line == fileData[0]) continue;
+    var data = line.Split(',');
+    routes.Add(new Route
     {
-        if (string.IsNullOrWhiteSpace(line)) continue;
-        var data = line.Split(',');
-        if (data.Length < 7) continue;
-
-        routes.Add(new Route
-        {
-            DepartureCity = data[0].Trim(),
-            ArrivalCity = data[1].Trim(),
-            DepartureHour = int.Parse(data[2]),
-            DepartureMinute = int.Parse(data[3]),
-            ArrivalHour = int.Parse(data[4]),
-            ArrivalMinute = int.Parse(data[5]),
-            DistanceKm = int.Parse(data[6])
-        });
-    }
+        DepartureCity = data[0],
+        ArrivalCity = data[1],
+        DepartureHour = int.Parse(data[2]),
+        DepartureMinute = int.Parse(data[3]),
+        ArrivalHour = int.Parse(data[4]),
+        ArrivalMinute = int.Parse(data[5]),
+        DistanceKm = int.Parse(data[6])
+    });
 }
+
+List<TimeSpan> durations = routes
+    .Select(r =>
+    {
+        var departure = new TimeSpan(r.DepartureHour, r.DepartureMinute, 0);
+        var arrival = new TimeSpan(r.ArrivalHour, r.ArrivalMinute, 0);
+        return arrival - departure;
+    })
+    .ToList();
+
+List<int> durationsInMinutes = durations
+    .Select(ts => (int)ts.TotalMinutes)
+    .ToList();
+
+List<double> averageSpeeds = routes
+    .Select((r, i) =>
+    {
+        var hours = durations[i].TotalHours;
+        return hours > 0.0 ? r.DistanceKm / hours : 0.0;
+    })
+    .ToList();
 
 // 2. feladat
 Console.WriteLine($"2. Az adatállományban {routes.Count} út szerepel.");
-Console.WriteLine();
 
 // 3. feladat
 var cities = routes
@@ -108,7 +114,7 @@ var cities = routes
     .ToList();
 Console.WriteLine("3. Városok (kiinduló és érkező):");
 Console.WriteLine(string.Join(", ", cities));
-Console.WriteLine();
+Console.WriteLine("\n");
 
 // 4. feladat
 var departureCities = routes
@@ -116,120 +122,71 @@ var departureCities = routes
     .Distinct()
     .OrderBy(c => c)
     .ToList();
+
 Console.WriteLine("4. Különböző indulási városok:");
 Console.WriteLine(string.Join(", ", departureCities));
-Console.WriteLine();
+Console.WriteLine("\n");
 
 // 5. feladat
-var beforeEight = routes
-    .Where(r => r.DepartureHour < 8)
-    .OrderBy(r => r.DepartureHour)
-    .ThenBy(r => r.DepartureMinute)
+var earlyRoutes = routes
+    .Where(r => r.DepartureHour < 8 || (r.DepartureHour == 8 && r.DepartureMinute == 0))
     .ToList();
-Console.WriteLine("5. Azok az utak, amelyek reggel 8:00 előtt indulnak:");
-foreach (var r in beforeEight)
+Console.WriteLine("5. Utak, amelyek reggel 8:00 előtt indulnak:");
+foreach (var route in earlyRoutes)
 {
-    Console.WriteLine($"{r.DepartureCity} -> {r.ArrivalCity}, indulás: {r.DepartureTimeString}, érkezés: {r.ArrivalTimeString}, távolság: {r.DistanceKm} km");
+    Console.WriteLine($"{route.DepartureCity} - {route.ArrivalCity}, indulás: {route.DepartureHour:D2}:{route.DepartureMinute:D2}");
 }
-Console.WriteLine();
+Console.WriteLine("\n");
 
 // 6. feladat
 Console.WriteLine("6. Minden út menetideje (percben):");
 foreach (var r in routes)
 {
-    Console.WriteLine($"{r.DepartureCity} -> {r.ArrivalCity}, menetidő: {r.DurationMinutes} perc");
+    Console.WriteLine($"{r.DepartureCity} - {r.ArrivalCity}: {durationsInMinutes[routes.IndexOf(r)]} perc");
 }
-Console.WriteLine();
+Console.WriteLine("\n");
 
 // 7. feladat
-var longest = routes.OrderByDescending(r => r.DurationMinutes).FirstOrDefault();
-if (longest != null)
-{
-    Console.WriteLine("7. A leghosszabb menetidejű út:");
-    Console.WriteLine($"{longest.DepartureCity} -> {longest.ArrivalCity}, indulás: {longest.DepartureTimeString}, érkezés: {longest.ArrivalTimeString}, távolság: {longest.DistanceKm} km, menetidő: {longest.DurationMinutes} perc");
-}
-Console.WriteLine();
+var longestRoute = routes[durationsInMinutes.IndexOf(durationsInMinutes.Max())];
+Console.WriteLine($"Leghosszabb menetidővel rendelkező út: {longestRoute}");
+Console.WriteLine("\n");
 
 // 8. feladat
-Console.WriteLine("8. Átlagsebesség minden út esetében (km/h):");
+Console.WriteLine("8. Minden út átlagsebessége (km/h):");
 foreach (var r in routes)
 {
-    var speed = r.AverageSpeedKmh;
-    var speedStr = double.IsNaN(speed) || double.IsInfinity(speed) ? "N/A" : speed.ToString("F2");
-    Console.WriteLine($"{r.DepartureCity} -> {r.ArrivalCity}, átlagsebesség: {speedStr} km/h");
+    Console.WriteLine($"{r.DepartureCity} - {r.ArrivalCity}: {averageSpeeds[routes.IndexOf(r)]:F2} km/h");
 }
-Console.WriteLine();
+Console.WriteLine("\n");
 
 // 9. feladat
-var fast = routes.Where(r => r.AverageSpeedKmh > 130).ToList();
-var slow = routes.Where(r => r.AverageSpeedKmh < 40 && !double.IsNaN(r.AverageSpeedKmh) && !double.IsInfinity(r.AverageSpeedKmh)).ToList();
+var fastRoutes = routes.Where((r, i) => averageSpeeds[i] > 130).ToList();
+var slowRoutes = routes.Where((r, i) => averageSpeeds[i] < 40).ToList();
 
-Console.WriteLine("9.a Azok az utak, ahol az átlagsebesség nagyobb mint 130 km/h:");
-if (fast.Any())
+Console.WriteLine("9. Utak, ahol nagyobb az átlagsebesség 130 km/h-nál: ");
+foreach (var route in fastRoutes)
 {
-    foreach (var r in fast)
-    {
-        Console.WriteLine($"{r.DepartureCity} -> {r.ArrivalCity}, átlagsebesség: {r.AverageSpeedKmh:F2} km/h");
-    }
+    Console.WriteLine(route);
 }
-else
-{
-    Console.WriteLine("Nincs ilyen út.");
-}
-Console.WriteLine();
 
-Console.WriteLine("9.b Azok az utak, ahol az átlagsebesség kisebb mint 40 km/h:");
-if (slow.Any())
+Console.WriteLine("\n9. Utak, ahol kisebb az átlagsebesség 40 km/h-nál: ");
+foreach (var route in slowRoutes)
 {
-    foreach (var r in slow)
-    {
-        Console.WriteLine($"{r.DepartureCity} -> {r.ArrivalCity}, átlagsebesség: {r.AverageSpeedKmh:F2} km/h");
-    }
+    Console.WriteLine(route);
 }
-else
-{
-    Console.WriteLine("Nincs ilyen út.");
-}
-Console.WriteLine();
+Console.WriteLine("\n");
 
 // 10. feladat
-Console.WriteLine("10. Csoportosítás érkezési város szerint:");
-var groups = routes
+var groupedByArrivalCity = routes
     .GroupBy(r => r.ArrivalCity)
-    .OrderBy(g => g.Key);
-
-foreach (var g in groups)
+    .Select(g => new ArrivalCityStats(
+        g.Key,
+        g.Count(),
+        g.Average(r => r.DistanceKm)
+    ))
+    .ToList();
+Console.WriteLine("10. Csoportosítás érkezési város szerint:");
+foreach (var group in groupedByArrivalCity)
 {
-    var count = g.Count();
-    var avgDistance = g.Any() ? g.Average(r => r.DistanceKm) : 0.0;
-    Console.WriteLine($"{g.Key}: érkező utak száma = {count}, átlagos távolság = {avgDistance:F2} km");
-}
-
-record Route
-{
-    public string DepartureCity { get; init; } = string.Empty;
-    public string ArrivalCity { get; init; } = string.Empty;
-    public int DepartureHour { get; init; }
-    public int DepartureMinute { get; init; }
-    public int ArrivalHour { get; init; }
-    public int ArrivalMinute { get; init; }
-    public int DistanceKm { get; init; }
-
-    public int DepartureTotalMinutes => DepartureHour * 60 + DepartureMinute;
-    public int ArrivalTotalMinutes => ArrivalHour * 60 + ArrivalMinute;
-    public int DurationMinutes => ArrivalTotalMinutes - DepartureTotalMinutes;
-
-    public double AverageSpeedKmh
-    {
-        get
-        {
-            if (DurationMinutes <= 0) return double.NaN;
-            var hours = DurationMinutes / 60.0;
-            if (hours <= 0) return double.NaN;
-            return DistanceKm / hours;
-        }
-    }
-
-    public string DepartureTimeString => $"{DepartureHour:D2}:{DepartureMinute:D2}";
-    public string ArrivalTimeString => $"{ArrivalHour:D2}:{ArrivalMinute:D2}";
+    Console.WriteLine($"{group.ArrivalCity}: {group.RouteCount} út, átlagos távolság: {group.AverageDistance:F2} km");
 }

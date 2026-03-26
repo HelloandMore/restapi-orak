@@ -1,0 +1,1 @@
+﻿public record ArrivalCityStats(string ArrivalCity, int RouteCount, double AverageDistance);
