@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Watches.Api/Watches.Api.csproj" />
+  <Project Path="Watches.Database/Watches.Database.csproj" />
+</Solution>
