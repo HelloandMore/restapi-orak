@@ -23,31 +23,31 @@ public class WatchModel
     public int Id { get; set; }
 
     [Required]
-    public string Manufacturer { get; set; } = string.Empty;
+    public string Manufacturer { get; set; }
 
     [Required]
-    public string Model { get; set; } = string.Empty;
+    public string Model { get; set; }
 
     [Required]
     public int ReleaseYear { get; set; }
 
     [Required]
-    public string Type { get; set; } = string.Empty;
+    public string Type { get; set; }
 
     [Required]
-    public string Movement { get; set; } = string.Empty;
+    public string Movement { get; set; }
 
     [Required]
     public int WaterResistanceM { get; set; }
 
     [Required]
-    public string CaseMaterial { get; set; } = string.Empty;
+    public string CaseMaterial { get; set; }
 
     [Required]
-    public string Functions { get; set; } = string.Empty;
+    public string Functions { get; set; }
 
     [Required]
-    public string Category { get; set; } = string.Empty;
+    public string Category { get; set; }
 
     public WatchEntity ToEntity()
     {
